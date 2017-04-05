@@ -1,3 +1,4 @@
+from itertools import ifilter, imap
 from threading import Thread
 from time import sleep
 
@@ -15,6 +16,14 @@ class Observable(object):
     def from_iterable(cls, iterable):
         # type: (Iterable) -> Observable
         return cls(iterable)
+
+    def filter(self, condition):
+        self.__iterable = ifilter(condition, self.__iterable)
+        return self
+
+    def map(self, callable_):
+        self.__iterable = imap(callable_, self.__iterable)
+        return self
 
     def subscribe(self, next_, error, end):
         self.__nexts.append(next_)
